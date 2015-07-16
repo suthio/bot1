@@ -44,43 +44,52 @@ tJR3DCVPIn7ObUiwFJBvc96fA8bnMwh+w52Y8eotoKQ=
 
 Connection = require('ssh2')
 crypto = require('crypto')
-aes = crypto.createDecipher('aes-256-cbc', new Buffer(process.env['DECIPHER_PASSWORD']))
-privateKey = aes.update(data, 'base64', 'utf8')
+# aes = crypto.createDecipher('aes-256-cbc', new Buffer(process.env['DECIPHER_PASSWORD']))
+aes = crypto.createDecipher('aes-256-cbc', new Buffer('password'))
+privateKey = aes.update(cipher, 'base64', 'utf8')
 privateKey += aes.final('utf8')
 
 module.exports = (robot) ->
   # uptimeとdfだけ許可する
-  robot.respond /\s+ssh\s+(uptime|df)\s*/i, (msg) ->
+  robot.respond /\s+ssh\s+(0|1|2)\s*/i, (msg) ->
     # user1とuser2だけ許可する
-    return if not /^(user1|user2)$/i.test(msg.message.user.name)
+    # return if not /^(user1|user2)$/i.test(msg.message.user.name)
     cmd = msg.match[1]
 
+    console.log cmd
     result = ""
-    conn = new Connection()
-    conn.on 'ready', () ->
+    conn1 = new Connection()
+    conn2 = new Connection()
+    conn1.on 'ready', () ->
       console.log 'Connection :: ready'
-      conn.exec cmd, (err, stream) ->
-        if err
-          console.log err
-          msg.send err
-          conn.end()
-          return
-        stream.on 'exit', (code, signal) ->
-          console.log 'Stream :: exit :: code: ' + code + ', signal: ' + signal
-        .on 'close', () ->
-          console.log 'Stream :: close'
-          conn.end()
-          msg.send ">>> #{result.toString()}"
-        .on 'data', (data) ->
-          console.log 'STDOUT: ' + data
-          result = data
-        .stderr.on 'data', (data) ->
-          console.log 'STDERR: ' + data
-          result = data
+      conn1.exec('nc 172.11.2.198 22', (err, stream) ->
+        conn2.connect({
+          sock: stream,
+          username: 'ec2-user',
+          privateKey: privateKey
+        })
+      )
     .connect({
       host: '54.178.209.132',
       port: 22,
       username: 'ec2-user',
       privateKey: privateKey
     })
+    conn2.on 'ready', ->
+      console.log 'SECOND :: connection ready'
+      # conn2.exec 'cd /data/birdsview/crawler/ranking && nohup ruby ranking_crawl ' + cmd + ' & ', (err, stream) ->
+      # conn2.exec 'cd /data/birdsview/crawler/ranking/ && nohup ruby ranking_crawl.rb 1 &', (err, stream) ->
+      conn2.exec 'cd /data/birdsview/crawler/ranking && nohup sh nextgrc.sh', { pry: true }, (err, stream) ->
+        if err
+          console.log 'SECOND :: exec error: ' + err
+          return conn1.end()
+        stream.on('end', ->
+          msg.send 'sended message'
+          conn1.end()
+          return
+        ).on 'data', (data) ->
+          console.log data.toString()
+          return
+        return
+      return
 
