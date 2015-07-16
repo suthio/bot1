@@ -5,6 +5,7 @@
   "author": "yuma.iwasaki <yuma.iwasaki@speee.jp>",
   "description": "speee",
   "dependencies": {
+    "crypto": "0.0.3",
     "hubot": "^2.13.2",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-images": "^0.1.5",
@@ -17,7 +18,8 @@
     "hubot-rules": "^0.1.1",
     "hubot-scripts": "^2.16.1",
     "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^3.3.0"
+    "hubot-slack": "^3.3.0",
+    "ssh2": "^0.4.10"
   },
   "engines": {
     "node": "0.10.x"
