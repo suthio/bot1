@@ -78,9 +78,9 @@ module.exports = (robot) ->
           console.log 'STDERR: ' + data
           result = data
     .connect({
-      host: 'x.x.x.x',
+      host: '54.178.209.132',
       port: 22,
-      username: 'username',
+      username: 'ec2-user',
       privateKey: privateKey
     })
 
