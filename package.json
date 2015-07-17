@@ -19,8 +19,9 @@
     "hubot-scripts": "^2.16.1",
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^3.3.0",
-    "ssh2": "^0.4.10",
-    "hubot-sushiyuki": "0.0.2"
+    "hubot-sushiyuki": "0.0.2",
+    "hubot-totsuzen": "0.0.2",
+    "ssh2": "^0.4.10"
   },
   "engines": {
     "node": "0.10.x"
