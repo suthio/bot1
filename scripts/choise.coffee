@@ -24,3 +24,7 @@ module.exports = (robot) ->
   robot.hear /赤福おじさんってだれだっけ？/, (msg) ->
     msg.reply "豊な"
 
+  robot.hear /赤福きた！/, (msg) ->
+    t = (new Date()).toISOString().replace(/[^0-9]/g, "")
+    
+    msg.reply "http://www.sbbit.jp/article/image/27385/250_bit131225_valor1.jpg?#{t}"
