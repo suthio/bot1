@@ -21,4 +21,6 @@ module.exports = (robot) ->
               'gaishimo']
     item = msg.random items
     msg.reply "#{item}で！"
+  robot.hear /赤福おじさんってだれだっけ？/, (msg) ->
+    msg.reply "豊な"
 
