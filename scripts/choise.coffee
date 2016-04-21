@@ -5,11 +5,16 @@
 
 module.exports = (robot) ->
   # uptimeとdfだけ許可する
-  #
+  robot.hear /(.+)からえらんで/, (msg) ->
+    items = msg.match[1].split(/[　・、\s]+/)
+    item = msg.random items
+    msg.reply "#{item}で！"
+
   robot.hear /(.+)から選んで/, (msg) ->
     items = msg.match[1].split(/[　・、\s]+/)
     item = msg.random items
     msg.reply "#{item}で！"
+
   robot.hear /WMレビューしてほしいな/, (msg) ->
     items = [
               'yusaku.hatanaka',
@@ -21,6 +26,7 @@ module.exports = (robot) ->
               'gaishimo']
     item = msg.random items
     msg.reply "#{item}で！"
+
   robot.hear /赤福おじさんってだれだっけ？/, (msg) ->
     msg.reply "豊な"
 
