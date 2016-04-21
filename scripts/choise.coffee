@@ -10,4 +10,15 @@ module.exports = (robot) ->
     items = msg.match[1].split(/[　・、\s]+/)
     item = msg.random items
     msg.reply "#{item}で！"
+  robot.hear /WMレビューしてほしいな/, (msg) ->
+    items = [
+              'yusaku.hatanaka',
+              'daiki.ueno', 'horikawa', 'kohei.yoshikura',
+              'kosuke.nishaya',
+              'thajime',
+              'yuma',
+              'junjinoma',
+              'gaishimo']
+    item = msg.random items
+    msg.reply "#{item}で！"
 
