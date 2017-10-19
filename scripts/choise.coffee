@@ -6,13 +6,13 @@
 module.exports = (robot) ->
   # uptimeとdfだけ許可する
   robot.hear /(.+)からえらんで/, (msg) ->
-    items = msg.match[1].split(/[　・、\s]+/)
+    items = msg.match[1].trim().split(/[　・、\s]+/)
     item = msg.random items
     msg.reply "#{item}で！"
 
   #
   robot.hear /(.+)から選んで/, (msg) ->
-    items = msg.match[1].split(/[　・、\s]+/)
+    items = msg.match[1].trim().split(/[　・、\s]+/)
     item = msg.random items
     msg.reply "#{item}で！"
 
